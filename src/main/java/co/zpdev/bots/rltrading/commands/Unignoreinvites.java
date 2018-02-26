@@ -41,7 +41,7 @@ public class Unignoreinvites {
             wr.write(data.toString(2));
             wr.close();
 
-            message.getChannel().sendMessage("Added " + message.getMentionedMembers().get(0).getEffectiveName() + " to the ignore list.").queue();
+            message.getChannel().sendMessage("Removed " + message.getMentionedMembers().get(0).getEffectiveName() + " from the ignore list.").queue();
         } catch (URISyntaxException | IOException e) {
             e.printStackTrace();
         }
