@@ -20,8 +20,9 @@ public class Ignoreinvites {
         if (message.getMentionedUsers().size() < 1) return;
 
         try {
-            File dir = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+            File dir = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile();
             File file = new File(dir, "config.json");
+            if (!file.exists()) file.createNewFile();
 
             FileReader rd = new FileReader(file);
             StringBuilder sb = new StringBuilder();
@@ -34,7 +35,17 @@ public class Ignoreinvites {
             JSONObject data = sb.toString().isEmpty() ? new JSONObject() : new JSONObject(sb.toString());
             JSONArray array = data.has("ignore") ? data.getJSONArray("ignore") : new JSONArray();
 
-            array.put(message.getMentionedUsers().get(0).getId());
+            String id = message.getMentionedUsers().get(0).getId();
+            boolean contains = false;
+            for (int i = 0; i < array.length(); i++) {
+                if (array.getString(i).equals(id)) contains = true;
+            }
+            if (contains) {
+                message.getChannel().sendMessage("That user is already in the list!").queue();
+                return;
+            }
+
+            array.put(id);
             data.put("ignore", array);
 
             FileWriter wr = new FileWriter(file);

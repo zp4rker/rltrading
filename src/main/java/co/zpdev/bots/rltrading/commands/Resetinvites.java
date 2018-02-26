@@ -2,7 +2,6 @@ package co.zpdev.bots.rltrading.commands;
 
 import co.zpdev.bots.core.command.Command;
 import co.zpdev.bots.rltrading.Main;
-import net.dv8tion.jda.core.entities.Invite;
 import net.dv8tion.jda.core.entities.Message;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -12,8 +11,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class Resetinvites {
 
@@ -36,8 +33,9 @@ public class Resetinvites {
 
     private JSONObject getData() {
         try {
-            File dir = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+            File dir = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile();
             File file = new File(dir, "config.json");
+            if (!file.exists()) file.createNewFile();
 
             FileReader rd = new FileReader(file);
             StringBuilder sb = new StringBuilder();

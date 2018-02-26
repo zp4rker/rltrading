@@ -9,14 +9,15 @@ import net.dv8tion.jda.core.entities.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Topinvites {
@@ -27,10 +28,14 @@ public class Topinvites {
         JSONArray array =  data.has("ignore") ? data.getJSONArray("ignore") : null;
 
         List<Invite> list = message.getGuild().getInvites().complete().stream()
-                .filter(i ->
-                    array == null ||
-                    !Arrays.asList(array.join(",").split(",")).contains(i.getInviter().getId()) && !i.getInviter().isBot()
-                ).collect(Collectors.toList());
+                .filter(inv -> {
+                    if (array ==  null) return true;
+                    List<String> arrList = new ArrayList<>();
+                    for (int i = 0; i < array.length(); i++) {
+                        arrList.add(array.getString(i));
+                    }
+                    return !arrList.contains(inv.getInviter().getId());
+                }).collect(Collectors.toList());
 
         LinkedHashMap<User, Integer> allInv = new LinkedHashMap<>();
 
@@ -46,12 +51,12 @@ public class Topinvites {
                 .forEach(entry -> invites.put(entry.getKey(), entry.getValue()));
 
         EmbedBuilder embed = new EmbedBuilder().setAuthor("RLTrading Discord", "https://discord.gg/KrFCGta", message.getGuild().getIconUrl())
-                .setTitle("Invite Leaderboard");
+                .setTitle("Invite Leaderboard").setColor(Color.RED);
 
         for (int i = 0; i < invites.size(); i++) {
             User user = invites.keySet().toArray(new User[0])[i];
             String name = user.getName() + "#" + user.getDiscriminator();
-            String uses = allInv.get(user) + "";
+            String uses = allInv.get(user) + " invited";
             embed.addField((i+1) + ". " + name, uses, false);
         }
 
@@ -60,8 +65,9 @@ public class Topinvites {
 
     private JSONObject getData() {
         try {
-            File dir = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+            File dir = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile();
             File file = new File(dir, "config.json");
+            if (!file.exists()) file.createNewFile();
 
             FileReader rd = new FileReader(file);
             StringBuilder sb = new StringBuilder();
