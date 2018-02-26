@@ -10,7 +10,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Resetinvites {
 
@@ -22,10 +24,14 @@ public class Resetinvites {
         JSONArray array = data.has("ignore") ? data.getJSONArray("ignore") : null;
 
         message.getGuild().getInvites().complete().stream()
-                .filter(i ->
-                        array == null ||
-                        !Arrays.asList(array.join(",").split(",")).contains(i.getInviter().getId()) && !i.getInviter().isBot()
-                )
+                .filter(inv -> {
+                    if (array ==  null) return true;
+                    List<String> arrList = new ArrayList<>();
+                    for (int i = 0; i < array.length(); i++) {
+                        arrList.add(array.getString(i));
+                    }
+                    return !arrList.contains(inv.getInviter().getId());
+                })
                 .forEach(i -> i.delete().complete());
 
         message.getChannel().sendMessage("Invites have been reset!").queue();
