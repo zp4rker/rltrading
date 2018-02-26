@@ -11,7 +11,8 @@ public class Main {
         CommandHandler handler = new CommandHandler("!", "co.zpdev.bots.rltrading.commands");
 
         new JDABuilder(AccountType.BOT).setToken(args[0])
-                .setEventManager(new AnnotatedEventManager()).buildBlocking();
+                .setEventManager(new AnnotatedEventManager())
+                .addEventListener(handler).buildBlocking();
     }
 
 }

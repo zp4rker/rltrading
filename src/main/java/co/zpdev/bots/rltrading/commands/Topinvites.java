@@ -14,8 +14,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Arrays;
-import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Topinvites {
@@ -25,21 +26,32 @@ public class Topinvites {
         JSONObject data = getData();
         JSONArray array =  data.has("ignore") ? data.getJSONArray("ignore") : null;
 
-        List<Invite> invites = message.getGuild().getInvites().complete().stream()
+        List<Invite> list = message.getGuild().getInvites().complete().stream()
                 .filter(i ->
                     array == null ||
                     !Arrays.asList(array.join(",").split(",")).contains(i.getInviter().getId()) && !i.getInviter().isBot()
-                )
-                .sorted(Comparator.comparingInt(Invite::getUses))
-                .limit(10).collect(Collectors.toList());
+                ).collect(Collectors.toList());
+
+        LinkedHashMap<User, Integer> allInv = new LinkedHashMap<>();
+
+        for (Invite i : list) {
+            if (allInv.containsKey(i.getInviter())) allInv.replace(i.getInviter(), allInv.get(i.getInviter()) + i.getUses());
+            else if (allInv.size() < 10) allInv.put(i.getInviter(), i.getUses());
+        }
+
+        LinkedHashMap<User, Integer> invites = new LinkedHashMap<>();
+
+        allInv.entrySet().stream()
+                .sorted((o1, o2) -> o1 == o2 ? 0 : o1.getValue() > o2.getValue() ? -1 : 1)
+                .forEach(entry -> invites.put(entry.getKey(), entry.getValue()));
 
         EmbedBuilder embed = new EmbedBuilder().setAuthor("RLTrading Discord", "https://discord.gg/KrFCGta", message.getGuild().getIconUrl())
-                .setFooter("Invite Leaderboard", null);
+                .setTitle("Invite Leaderboard");
 
         for (int i = 0; i < invites.size(); i++) {
-            User user = invites.get(i).getInviter();
+            User user = invites.keySet().toArray(new User[0])[i];
             String name = user.getName() + "#" + user.getDiscriminator();
-            String uses = invites.get(i).getUses() + "";
+            String uses = allInv.get(user) + "";
             embed.addField((i+1) + ". " + name, uses, false);
         }
 
