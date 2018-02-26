@@ -55,6 +55,7 @@ public class Topinvites {
 
         for (int i = 0; i < invites.size(); i++) {
             User user = invites.keySet().toArray(new User[0])[i];
+            if (user == null) continue;
             String name = user.getName() + "#" + user.getDiscriminator();
             String uses = allInv.get(user) + " invited";
             embed.addField((i+1) + ". " + name, uses, false);

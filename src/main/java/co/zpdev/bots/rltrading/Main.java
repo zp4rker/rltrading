@@ -10,7 +10,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         CommandHandler handler = new CommandHandler("!", "co.zpdev.bots.rltrading.commands");
 
-        new JDABuilder(AccountType.BOT).setToken(args[0])
+        new JDABuilder(AccountType.BOT).setToken("MzE5NjAxNzk4NTIyNjAxNDgy.DXX8ug.uJWNxxiE6_3H8fkKm3BhikPa49c")
                 .setEventManager(new AnnotatedEventManager())
                 .addEventListener(handler).buildBlocking();
     }
