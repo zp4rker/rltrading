@@ -30,6 +30,7 @@ public class Topinvites {
         List<Invite> list = message.getGuild().getInvites().complete().stream()
                 .filter(inv -> {
                     if (array ==  null) return true;
+                    if (inv.getInviter() == null) return false;
                     List<String> arrList = new ArrayList<>();
                     for (int i = 0; i < array.length(); i++) {
                         arrList.add(array.getString(i));
