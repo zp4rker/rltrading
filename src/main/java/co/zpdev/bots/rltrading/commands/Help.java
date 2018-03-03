@@ -15,6 +15,8 @@ public class Help {
                 .setFooter("Developed by ZP4RKER#3333", null)
                 .setDescription("**Main Commands**\n!topinvites\n!8ball\n!help\n!credits\n!invite\n" +
                                             "**Staff Commands**\n!ban\n!kick\n!resetinvites").build();
+
+        message.getChannel().sendMessage(embed).queue();
     }
 
 }
