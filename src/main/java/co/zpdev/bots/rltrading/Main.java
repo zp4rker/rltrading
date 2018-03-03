@@ -1,6 +1,7 @@
 package co.zpdev.bots.rltrading;
 
 import co.zpdev.bots.core.command.handler.CommandHandler;
+import co.zpdev.bots.rltrading.listeners.MemberJoin;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.hooks.AnnotatedEventManager;
@@ -12,7 +13,8 @@ public class Main {
 
         new JDABuilder(AccountType.BOT).setToken(args[0])
                 .setEventManager(new AnnotatedEventManager())
-                .addEventListener(handler).buildBlocking();
+                .addEventListener(handler)
+                .addEventListener(new MemberJoin()).buildBlocking();
     }
 
 }
