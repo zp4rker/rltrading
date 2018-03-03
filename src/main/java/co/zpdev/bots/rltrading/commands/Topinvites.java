@@ -29,6 +29,7 @@ public class Topinvites {
 
         List<Invite> list = message.getGuild().getInvites().complete().stream()
                 .filter(inv -> {
+                    if (inv.getInviter().isBot()) return false;
                     if (array ==  null) return true;
                     if (inv.getInviter() == null) return false;
                     List<String> arrList = new ArrayList<>();
@@ -51,7 +52,7 @@ public class Topinvites {
                 .sorted((o1, o2) -> o1 == o2 ? 0 : o1.getValue() > o2.getValue() ? -1 : 1)
                 .forEach(entry -> invites.put(entry.getKey(), entry.getValue()));
 
-        EmbedBuilder embed = new EmbedBuilder().setAuthor("RLTrading Discord", "https://discord.gg/KrFCGta", message.getGuild().getIconUrl())
+        EmbedBuilder embed = new EmbedBuilder().setAuthor(message.getGuild().getName(), null, message.getGuild().getIconUrl())
                 .setTitle("Invite Leaderboard").setColor(Color.RED);
 
         for (int i = 0; i < invites.size(); i++) {

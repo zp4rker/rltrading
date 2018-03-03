@@ -16,7 +16,7 @@ public class Ignoreinvites {
 
     @Command(aliases = "ignoreinvites")
     public void onCommand(Message message) {
-        if (message.getMember().getRoles().stream().noneMatch(r -> r.getName().equals("Owner") || r.getName().equals("Admin"))) return;
+        if (!message.getAuthor().getId().equals("272695786716790786")) return;
         if (message.getMentionedUsers().size() < 1) return;
 
         try {

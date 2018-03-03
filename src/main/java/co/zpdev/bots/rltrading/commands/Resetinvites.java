@@ -18,13 +18,14 @@ public class Resetinvites {
 
     @Command(aliases = "resetinvites")
     public void onCommand(Message message) {
-        if (message.getMember().getRoles().stream().noneMatch(r -> r.getName().equals("Owner") || r.getName().equals("Admin"))) return;
+        if (!message.getMember().isOwner()) return;
 
         JSONObject data = getData();
         JSONArray array = data.has("ignore") ? data.getJSONArray("ignore") : null;
 
         message.getGuild().getInvites().complete().stream()
                 .filter(inv -> {
+                    if (inv.getInviter().isBot()) return false;
                     if (array ==  null) return true;
                     List<String> arrList = new ArrayList<>();
                     for (int i = 0; i < array.length(); i++) {
