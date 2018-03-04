@@ -6,12 +6,16 @@
 
     <groupId>co.zpdev.bots</groupId>
     <artifactId>rltrading</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.5</version>
 
     <repositories>
         <repository>
             <id>zpdev</id>
             <url>https://cdn.rawgit.com/ZP4RKER/maven/master</url>
+        </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
     </repositories>
 
@@ -19,6 +23,11 @@
         <dependency>
             <groupId>co.zpdev.bots</groupId>
             <artifactId>core</artifactId>
+            <version>LATEST</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.DiscordBotList</groupId>
+            <artifactId>DBL-Java-Wrapper</artifactId>
             <version>LATEST</version>
         </dependency>
     </dependencies>
