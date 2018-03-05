@@ -25,6 +25,7 @@ public class Resetinvites {
 
         message.getGuild().getInvites().complete().stream()
                 .filter(inv -> {
+                    if (inv == null) return false;
                     if (inv.getInviter().isBot()) return false;
                     if (array ==  null) return true;
                     List<String> arrList = new ArrayList<>();

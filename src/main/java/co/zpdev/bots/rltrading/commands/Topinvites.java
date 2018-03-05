@@ -29,6 +29,7 @@ public class Topinvites {
 
         List<Invite> list = message.getGuild().getInvites().complete().stream()
                 .filter(inv -> {
+                    if (inv == null) return false;
                     if (inv.getInviter().isBot()) return false;
                     if (array ==  null) return true;
                     if (inv.getInviter() == null) return false;
@@ -51,6 +52,7 @@ public class Topinvites {
         allInv.entrySet().stream()
                 .sorted((o1, o2) -> o1 == o2 ? 0 : o1.getValue() > o2.getValue() ? -1 : 1)
                 .forEach(entry -> invites.put(entry.getKey(), entry.getValue()));
+        System.out.println("#4");
 
         EmbedBuilder embed = new EmbedBuilder().setAuthor(message.getGuild().getName(), null, message.getGuild().getIconUrl())
                 .setTitle("Invite Leaderboard").setColor(Color.RED);
