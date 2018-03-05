@@ -8,7 +8,7 @@ public class GuildJoin {
 
     @SubscribeEvent
     public void onGuildJoin(GuildJoinEvent event) {
-        Main.dblApi.setStats(event.getJDA().asBot().getApplicationInfo().complete().getId(), event.getJDA().getGuilds().size());
+        if (Main.dblApi != null) Main.dblApi.setStats(event.getJDA().asBot().getApplicationInfo().complete().getId(), event.getJDA().getGuilds().size());
     }
 
 }

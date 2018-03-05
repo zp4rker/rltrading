@@ -15,7 +15,7 @@ import java.util.TimerTask;
 
 public class Main {
 
-    public static DiscordBotListAPI dblApi;
+    public static DiscordBotListAPI dblApi = null;
     private static boolean servers = true;
 
     public static void main(String[] args) throws Exception {
@@ -28,8 +28,8 @@ public class Main {
                 .addEventListener(new GuildJoin())
                 .buildBlocking();
 
-        DiscordBotListAPI dblApi = new DiscordBotListAPI.Builder().token(args[1]).build();
-        dblApi.setStats(jda.asBot().getApplicationInfo().complete().getId(), jda.getGuilds().size());
+        if (args.length > 1) dblApi = new DiscordBotListAPI.Builder().token(args[1]).build();
+        if (dblApi != null) dblApi.setStats(jda.asBot().getApplicationInfo().complete().getId(), jda.getGuilds().size());
 
         new Timer().scheduleAtFixedRate(new TimerTask() {
             @Override
