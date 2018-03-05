@@ -27,12 +27,13 @@ public class Topinvites {
         JSONObject data = getData();
         JSONArray array =  data.has("ignore") ? data.getJSONArray("ignore") : null;
 
-        List<Invite> list = message.getGuild().getInvites().complete().stream()
+        List<Invite> list = message.getGuild().getInvites().complete();
+        System.out.println(list.size());
+        list = list.stream()
                 .filter(inv -> {
-                    if (inv == null) return false;
+                    if (inv.getInviter() == null) return false;
                     if (inv.getInviter().isBot()) return false;
                     if (array ==  null) return true;
-                    if (inv.getInviter() == null) return false;
                     List<String> arrList = new ArrayList<>();
                     for (int i = 0; i < array.length(); i++) {
                         arrList.add(array.getString(i));
