@@ -3,11 +3,13 @@ package co.zpdev.bots.rltrading.listeners;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
+import net.dv8tion.jda.core.hooks.SubscribeEvent;
 
 import java.awt.*;
 
 public class MemberJoin {
 
+    @SubscribeEvent
     public void onJoin(GuildMemberJoinEvent event) {
         if (!event.getGuild().getId().equals("351614020907696129")) return;
 
