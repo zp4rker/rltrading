@@ -27,9 +27,7 @@ public class Topinvites {
         JSONObject data = getData();
         JSONArray array =  data.has("ignore") ? data.getJSONArray("ignore") : null;
 
-        List<Invite> list = message.getGuild().getInvites().complete();
-        System.out.println(list.size());
-        list = list.stream()
+        List<Invite> list = message.getGuild().getInvites().complete().stream()
                 .filter(inv -> {
                     if (inv.getInviter() == null) return false;
                     if (inv.getInviter().isBot()) return false;
@@ -39,6 +37,9 @@ public class Topinvites {
                         arrList.add(array.getString(i));
                     }
                     return !arrList.contains(inv.getInviter().getId());
+                }).sorted((i1, i2) -> {
+                    if (i1.getUses() == i2.getUses()) return 0;
+                    return i1.getUses() > i2.getUses() ? -1 : 1;
                 }).collect(Collectors.toList());
 
         LinkedHashMap<User, Integer> allInv = new LinkedHashMap<>();
@@ -53,7 +54,6 @@ public class Topinvites {
         allInv.entrySet().stream()
                 .sorted((o1, o2) -> o1 == o2 ? 0 : o1.getValue() > o2.getValue() ? -1 : 1)
                 .forEach(entry -> invites.put(entry.getKey(), entry.getValue()));
-        System.out.println("#4");
 
         EmbedBuilder embed = new EmbedBuilder().setAuthor(message.getGuild().getName(), null, message.getGuild().getIconUrl())
                 .setTitle("Invite Leaderboard").setColor(Color.RED);
