@@ -39,7 +39,7 @@ public class Eightball {
                 "very doubtful."
         };
 
-        int i = new Random().nextInt(8);
+        int i = new Random().nextInt(20);
 
         message.getChannel().sendMessage(message.getAuthor().getAsMention() + ", " + answers[i]).queue();
     }
