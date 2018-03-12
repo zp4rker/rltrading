@@ -2,6 +2,7 @@ package co.zpdev.bots.rltrading;
 
 import co.zpdev.bots.core.command.handler.CommandHandler;
 import co.zpdev.bots.rltrading.listeners.GuildJoin;
+import co.zpdev.bots.rltrading.listeners.DevControl;
 import co.zpdev.bots.rltrading.listeners.MemberJoin;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
@@ -16,6 +17,8 @@ import java.util.TimerTask;
 public class Main {
 
     public static DiscordBotListAPI dblApi = null;
+    public static String DBLTOKEN = "";
+
     private static boolean servers = true;
 
     public static void main(String[] args) throws Exception {
@@ -26,9 +29,14 @@ public class Main {
                 .addEventListener(handler)
                 .addEventListener(new MemberJoin())
                 .addEventListener(new GuildJoin())
+                .addEventListener(new DevControl())
                 .buildBlocking();
 
-        if (args.length > 1) dblApi = new DiscordBotListAPI.Builder().token(args[1]).build();
+        if (args.length > 1) {
+            dblApi = new DiscordBotListAPI.Builder().token(args[1]).build();
+            DBLTOKEN = args[1];
+        }
+
         if (dblApi != null) dblApi.setStats(jda.asBot().getApplicationInfo().complete().getId(), jda.getGuilds().size());
 
         new Timer().scheduleAtFixedRate(new TimerTask() {
